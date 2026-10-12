@@ -1,0 +1,40 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+
+  <block wx:if="{{detail}}">
+    <view class="card hero-card">
+      <image class="d-img" src="{{detail.image}}" mode="aspectFit" lazy-load="true" />
+      <view class="d-name">{{detail.name}}</view>
+    </view>
+
+    <!-- 组成 -->
+    <view class="section-title">组成 / 配料</view>
+    <view class="card">
+      <block wx:if="{{detail.composition && detail.composition.length > 0}}">
+        <view class="comp" wx:for="{{detail.composition}}" wx:for-item="r" wx:key="roundId">
+          <view class="comp-name">{{r.name}} ×{{r.quantity}}</view>
+          <view class="comp-choices muted" wx:for="{{r.choices}}" wx:for-item="c" wx:key="code">
+            · {{c.name}}
+          </view>
+        </view>
+      </block>
+      <view wx:else class="tip">此为单品，无套餐子项。</view>
+    </view>
+
+    <!-- 热量 / 营养 -->
+    <view class="section-title">热量 / 营养</view>
+    <view class="card">
+      <block wx:if="{{detail.nutrition}}">
+        <view class="kcal"><text class="kcal-num">{{detail.nutrition.energyKcal}}</text><text class="kcal-unit">kcal</text></view>
+        <view class="nutri-grid">
+          <view class="nutri"><text class="n-v">{{detail.nutrition.protein}}</text><text class="n-l">蛋白质(g)</text></view>
+          <view class="nutri"><text class="n-v">{{detail.nutrition.fat}}</text><text class="n-l">脂肪(g)</text></view>
+          <view class="nutri"><text class="n-v">{{detail.nutrition.carbohydrate}}</text><text class="n-l">碳水(g)</text></view>
+          <view class="nutri"><text class="n-v">{{detail.nutrition.sodium}}</text><text class="n-l">钠(mg)</text></view>
+          <view class="nutri"><text class="n-v">{{detail.nutrition.calcium}}</text><text class="n-l">钙(mg)</text></view>
+        </view>
+      </block>
+      <view wx:else class="tip">暂无该单品的营养数据。</view>
+    </view>
+  </block>
+</view>

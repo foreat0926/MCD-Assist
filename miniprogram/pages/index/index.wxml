@@ -2,6 +2,28 @@
   <view class="hero">MCD-Assist</view>
   <view class="subtitle">麦当劳智能订餐 · 生活管理</view>
 
+  <!-- 门店条 -->
+  <view class="store-bar" bindtap="chooseStore">
+    <block wx:if="{{storeName}}">
+      <text class="store-name">{{storeName}}</text>
+      <text class="store-change">切换 ›</text>
+    </block>
+    <block wx:else>
+      <text class="store-name muted">未选择门店，点击选择</text>
+    </block>
+  </view>
+
+  <!-- 主入口 -->
+  <view class="entry">
+    <view class="entry-btn btn-red" bindtap="goMenu">🍔 开始点餐</view>
+  </view>
+  <view class="entry-grid">
+    <view class="entry-cell" bindtap="goWiki"><view class="ec-ico">📖</view><view>单品图鉴</view></view>
+    <view class="entry-cell" bindtap="goCoupons"><view class="ec-ico">🎟️</view><view>优惠券</view></view>
+    <view class="entry-cell" bindtap="goProfile"><view class="ec-ico">👤</view><view>我的</view></view>
+  </view>
+
+  <!-- 活动日历 -->
   <view class="section-title">近期活动</view>
   <view wx:if="{{loading}}" class="tip">加载中...</view>
   <view wx:else>

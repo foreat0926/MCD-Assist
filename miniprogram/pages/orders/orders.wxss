@@ -1,0 +1,6 @@
+.center { text-align: center; }
+.center .btn { width: 50%; margin: 20rpx auto; }
+.order { margin: 12rpx 0; }
+.o-top { display: flex; justify-content: space-between; margin-bottom: 8rpx; }
+.o-no { font-size: 30rpx; font-weight: 700; }
+.o-status { font-size: 24rpx; color: #2ba24a; }

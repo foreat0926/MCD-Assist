@@ -1,0 +1,13 @@
+<view class="container">
+  <view class="section-title">可领取券</view>
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{available.length === 0}}" class="tip">暂无可领取券</view>
+  <view class="grid">
+    <view class="coupon" wx:for="{{available}}" wx:key="index">
+      <image src="{{item.image}}" mode="aspectFill" lazy-load="true" />
+      <view class="c-title">{{item.title}}</view>
+      <view class="c-status">{{item.status}}</view>
+    </view>
+  </view>
+  <view class="tip">领券请在「我的」使用一键领券（真实写入卡包）。</view>
+</view>

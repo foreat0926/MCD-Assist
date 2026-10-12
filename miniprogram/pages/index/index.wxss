@@ -1,42 +1,26 @@
-.hero {
-  font-size: 52rpx;
-  font-weight: bold;
-  color: #d52b1e;
-  padding: 16rpx 0 4rpx;
-}
-.subtitle {
-  font-size: 26rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-}
-.section-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  margin: 24rpx 0 12rpx;
-}
-.card {
+.store-bar {
   background: #fff;
   border-radius: 16rpx;
-  padding: 20rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  padding: 24rpx;
+  margin: 12rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
 }
-.title {
-  font-size: 30rpx;
-  font-weight: 600;
-}
-.date {
-  font-size: 24rpx;
-  color: #888;
-  margin-top: 8rpx;
-}
-.summary {
-  font-size: 24rpx;
-  color: #666;
-  margin-top: 8rpx;
-}
-.tip {
-  color: #999;
+.store-name { font-size: 30rpx; font-weight: 600; }
+.store-change { color: #DA291C; font-size: 26rpx; }
+.entry { margin: 24rpx 0 12rpx; }
+.entry-btn { padding: 24rpx 0; font-size: 34rpx; }
+.entry-grid { display: flex; margin: 12rpx 0 8rpx; }
+.entry-cell {
+  flex: 1;
+  background: #fff;
+  border-radius: 16rpx;
+  margin: 0 6rpx;
+  padding: 24rpx 0;
+  text-align: center;
   font-size: 26rpx;
-  padding: 20rpx 0;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
 }
+.ec-ico { font-size: 44rpx; margin-bottom: 8rpx; }

@@ -1,0 +1,19 @@
+<view class="container">
+  <view wx:if="{{!hasStore}}" class="card center">
+    <view class="tip">图鉴依赖所选门店的菜单，请先选择门店</view>
+    <view class="btn choose-btn" bindtap="chooseStore">选择门店</view>
+  </view>
+
+  <block wx:if="{{hasStore}}">
+    <view wx:if="{{loading}}" class="tip">图鉴加载中...</view>
+    <block wx:for="{{categories}}" wx:for-item="cat" wx:key="category">
+      <view class="section-title">{{cat.category}}</view>
+      <view class="grid">
+        <view class="grid-item" wx:for="{{cat.meals}}" wx:key="code" bindtap="toDetail" data-code="{{meal.code}}">
+          <image src="{{meal.image}}" mode="aspectFill" lazy-load="true" />
+          <view class="info"><view class="name">{{meal.name}}</view></view>
+        </view>
+      </view>
+    </block>
+  </block>
+</view>

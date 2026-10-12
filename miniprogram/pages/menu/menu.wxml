@@ -1,0 +1,26 @@
+<view class="container">
+  <view class="bar">📍 {{storeName || '未选择门店'}}</view>
+
+  <view wx:if="{{loading}}" class="tip">菜单加载中...</view>
+
+  <block wx:for="{{categories}}" wx:key="category" wx:for-item="cat">
+    <view class="section-title">{{cat.category}}</view>
+    <view class="grid">
+      <view class="grid-item" wx:for="{{cat.meals}}" wx:for-item="meal" wx:key="code" bindtap="toDetail" data-code="{{meal.code}}">
+        <image src="{{meal.image}}" mode="aspectFill" lazy-load="true" />
+        <view class="info">
+          <view class="name">{{meal.name}}</view>
+          <view class="row">
+            <text class="price">¥{{meal.currentPrice}}</text>
+            <view class="add-btn" catchtap="add" data-meal="{{meal}}">＋</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+
+<view class="cart-bar" wx:if="{{cartCount > 0}}">
+  <text>已选 {{cartCount}} 件</text>
+  <view class="btn btn-red go-cart" bindtap="toCart">去拼单 ›</view>
+</view>
