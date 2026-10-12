@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="hero">MCD-Assist</view>
+  <view class="subtitle">麦当劳智能订餐 · 生活管理</view>
+
+  <view class="section-title">近期活动</view>
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:else>
+    <view wx:for="{{activities}}" wx:key="id" class="card">
+      <view class="title">{{item.title}}</view>
+      <view class="date">{{item.start_date}} ~ {{item.end_date}}</view>
+      <view wx:if="{{item.summary}}" class="summary">{{item.summary}}</view>
+    </view>
+    <view wx:if="{{activities.length === 0}}" class="tip">暂无活动</view>
+  </view>
+</view>

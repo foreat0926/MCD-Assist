@@ -1,0 +1,42 @@
+.hero {
+  font-size: 52rpx;
+  font-weight: bold;
+  color: #d52b1e;
+  padding: 16rpx 0 4rpx;
+}
+.subtitle {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin: 24rpx 0 12rpx;
+}
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+.title {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.date {
+  font-size: 24rpx;
+  color: #888;
+  margin-top: 8rpx;
+}
+.summary {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 8rpx;
+}
+.tip {
+  color: #999;
+  font-size: 26rpx;
+  padding: 20rpx 0;
+}

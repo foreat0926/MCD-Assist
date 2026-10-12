@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "MCD-Assist",
+    "navigationBarBackgroundColor": "#FFC72C",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF8E1"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

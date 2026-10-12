@@ -1,0 +1,16 @@
+{
+  "appid": "touristappid",
+  "projectname": "MCD-Assist",
+  "description": "MCD-Assist 麦当劳智能订餐小程序",
+  "compileType": "miniprogram",
+  "libVersion": "latest",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true
+  },
+  "condition": {}
+}
