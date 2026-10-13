@@ -13,20 +13,6 @@ db.pragma('journal_mode = WAL');
 
 export function initDb(): void {
   db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      openid TEXT PRIMARY KEY,
-      token TEXT,
-      created_at INTEGER NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS orders (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      openid TEXT NOT NULL,
-      mcd_order_ref TEXT,
-      plan_json TEXT,
-      total REAL,
-      status TEXT,
-      created_at INTEGER NOT NULL
-    );
     CREATE TABLE IF NOT EXISTS activities (
       id TEXT PRIMARY KEY,
       title TEXT,

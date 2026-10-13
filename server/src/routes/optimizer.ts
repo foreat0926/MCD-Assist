@@ -49,7 +49,7 @@ async function priceOnce(
   }
 }
 
-/** 取门店可用券（含 couponId/couponCode/name） */
+/** 取店面可用券（含 couponId/couponCode/name） */
 async function getStoreCoupons(storeCode: string): Promise<any[]> {
   try {
     const r = await callMcpToolJson('query-store-coupons', {
@@ -84,45 +84,39 @@ async function findCheapAddon(storeCode: string): Promise<Item | null> {
   }
 }
 
+const couponMeta = (c: any) => ({
+  couponId: c.couponId || c.id || null,
+  couponCode: c.couponCode || c.code || null,
+  name: c.name || c.title || c.couponName || null
+});
+
 /**
  * POST /api/optimizer
- * 输入：{ storeCode, items:[{productCode,quantity,roundList?}], bindFirst? }
- * 主方案：严格按所选商品，基准价 + 逐门店券试算取最低。
- * 参考方案：额外 +1 杯最便宜饮料/小食，重新求最优（用于满减凑单参考）。
+ * 输入：{ storeCode, items:[{productCode,quantity,roundList?}] }
+ * 纯模拟：按「店面可用券」逐张试算取最优；店面无可用券时回退为标价/套餐优惠的基准价。
+ * 主方案：严格按所选商品。参考方案：额外 +1 杯最便宜饮料/小食（凑单参考）。
+ * 不涉及登录、不下单、不领券。
  */
 router.post('/', async (req, res) => {
   try {
-    const { storeCode, items, bindFirst } = (req.body || {}) as {
+    const { storeCode, items } = (req.body || {}) as {
       storeCode?: string;
       items?: Item[];
-      bindFirst?: boolean;
     };
     if (!storeCode) return res.status(400).json({ error: 'storeCode required' });
     if (!Array.isArray(items) || items.length === 0)
       return res.status(400).json({ error: 'items required' });
 
-    if (bindFirst) {
-      try {
-        await callMcpToolJson('auto-bind-coupons', {});
-      } catch {
-        /* 领券失败不阻断 */
-      }
-    }
-
     const baseline = await priceOnce(storeCode, items);
     if (!baseline) {
-      return res.status(502).json({ error: 'calculate-price failed (门店可能已打烊或商品不可售)' });
+      return res.status(502).json({ error: 'calculate-price failed (门店可能已打烊或商品当前不可售)' });
     }
 
-    const coupons = await getStoreCoupons(storeCode);
+    const storeCoupons = (await getStoreCoupons(storeCode)).map(couponMeta);
     let best = { ...baseline, coupon: null as any };
-    for (const c of coupons) {
-      const cid = c.couponId || c.id;
-      const ccode = c.couponCode || c.code;
-      const priced = await priceOnce(storeCode, items, cid, ccode);
-      if (priced && priced.price < best.price) {
-        best = { ...priced, coupon: { couponId: cid, couponCode: ccode, name: c.name || c.title || null } };
-      }
+    for (const c of storeCoupons) {
+      const priced = await priceOnce(storeCode, items, c.couponId || undefined, c.couponCode || undefined);
+      if (priced && priced.price < best.price) best = { ...priced, coupon: c };
     }
 
     // 参考方案：+1 最便宜饮料/小食
@@ -133,11 +127,9 @@ router.post('/', async (req, res) => {
       const refBaseline = await priceOnce(storeCode, refItems);
       if (refBaseline) {
         let refBest = { ...refBaseline, coupon: null as any };
-        for (const c of coupons) {
-          const priced = await priceOnce(storeCode, refItems, c.couponId || c.id, c.couponCode || c.code);
-          if (priced && priced.price < refBest.price) {
-            refBest = { ...priced, coupon: { couponId: c.couponId || c.id, couponCode: c.couponCode || c.code, name: c.name || c.title || null } };
-          }
+        for (const c of storeCoupons) {
+          const priced = await priceOnce(storeCode, refItems, c.couponId || undefined, c.couponCode || undefined);
+          if (priced && priced.price < refBest.price) refBest = { ...priced, coupon: c };
         }
         reference = {
           addedItem: addon,
@@ -152,6 +144,11 @@ router.post('/', async (req, res) => {
     }
 
     res.json({
+      storeCoupons,
+      couponNote:
+        storeCoupons.length === 0
+          ? '本店暂无返回可用券数据，已按标价/套餐优惠计算；可领券请在「优惠券」页参考并到官方 App 领取。'
+          : '已按本店可用券逐张试算，取最低。',
       mainPlan: {
         price: best.price,
         originalPrice: best.originalPrice,

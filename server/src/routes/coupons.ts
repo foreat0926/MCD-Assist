@@ -6,39 +6,22 @@ const router = Router();
 
 /**
  * GET /api/coupons?storeCode=xxx
- * 聚合优惠券中心：
- *   - available：麦麦省可领取券（available-coupons，Markdown -> 解析 title/status/image）
- *   - mine：用户卡包（query-my-coupons，文本；无券时返回 []）
- *   - store：当前门店可用券（query-store-coupons，data[]）
+ * 优惠信息（模拟工具，仅展示，不领取、不绑定、不涉及账号）：
+ *   - available：麦麦省可领取券（available-coupons，Markdown -> 解析 title/status/image），公开参考
+ *   - store：当前店面可用券（query-store-coupons，data[]），供优惠试算参考
  */
 router.get('/', async (req, res) => {
   try {
     const storeCode = req.query.storeCode as string;
-    const [availableRaw, mineRaw, storeRaw] = await Promise.all([
+    const [availableRaw, storeRaw] = await Promise.all([
       callMcpToolText('available-coupons', {}),
-      callMcpToolText('query-my-coupons', {}),
       storeCode
         ? callMcpToolJson('query-store-coupons', { storeCode, orderType: 1, beType: 1 })
         : Promise.resolve(null)
     ]);
     const available = parseCouponMarkdown(availableRaw);
-    const mine =
-      mineRaw && mineRaw.includes('暂无') ? [] : { raw: mineRaw };
     const store = Array.isArray(storeRaw?.data) ? storeRaw.data : [];
-    res.json({ available, mine, store });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-/**
- * POST /api/coupons/auto-bind
- * 一键领取麦麦省所有当前可用券（auto-bind-coupons）。会真实改写用户卡包，需前端明确触发。
- */
-router.post('/auto-bind', async (_req, res) => {
-  try {
-    const result = await callMcpToolJson('auto-bind-coupons', {});
-    res.json({ result });
+    res.json({ available, store });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
   }
