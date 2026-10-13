@@ -96,11 +96,3 @@ export function parseCouponMarkdown(text: string): CouponItem[] {
   return out;
 }
 
-/** 从文本里提取所有 <img src="..."> 的 URL */
-export function extractImageUrls(text: string): string[] {
-  const urls: string[] = [];
-  const re = /<img[^>]*src="([^"]+)"/g;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(text)) !== null) urls.push(m[1]);
-  return urls;
-}
